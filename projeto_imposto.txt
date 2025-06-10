@@ -1,0 +1,127 @@
+Relatório Técnico: Análise das Planilhas de Dados "projeto_Imposto_DIO.xlsx"
+
+LINK DO PLANILHA: https://docs.google.com/spreadsheets/d/18gSBwW9MOlbZWe8mn0lnhELd0sSMMgN4/edit?usp=drive_link&ouid=107451405876067457446&rtpof=true&sd=true
+
+1. Introdução
+
+Este relatório técnico tem como objetivo analisar a estrutura e o conteúdo das planilhas de dados fornecidas em formato CSV, originárias do arquivo "projeto_Imposto_DIO.xlsx". As planilhas examinadas são: TITULAR.csv, INFORMES.csv, NOTAS.csv e TBL_BANCOS.csv. A análise visa compreender a finalidade de cada conjunto de dados, suas colunas, possíveis tipos de dados e as relações inferidas entre elas, sugerindo um contexto de utilização para declaração de imposto de renda ou análise financeira pessoal.
+
+2. Análise Detalhada das Planilhas CSV
+
+2.1. TITULAR.csv
+Finalidade Provável: Esta planilha parece conter os dados de identificação do titular (contribuinte) principal para o qual as informações financeiras e de imposto serão processadas. É a entidade central à qual as demais informações estarão ligadas.
+
+Estrutura e Dados (Exemplo Inferido):
+
+CPF: Identificador único do titular.
+
+Nome: Nome completo do titular.
+
+DataNascimento: Data de nascimento do titular.
+
+Endereco: Endereço completo.
+
+Email: Endereço de e-mail de contato.
+
+Telefone: Número de telefone.
+
+Observações: Essencial para a personalização e atribuição das informações financeiras.
+
+2.2. INFORMES.csv
+Finalidade Provável: Esta planilha provavelmente registra informações de rendimentos e/ou movimentações financeiras variadas, possivelmente extraídas de informes de rendimentos de diferentes fontes (bancos, corretoras, empregadores).
+
+Estrutura e Dados (Exemplo Inferido):
+
+ID_Informe: Identificador único para cada informe/registro.
+
+CPF_Titular: Chave estrangeira que se ligaria ao CPF na planilha TITULAR.csv.
+
+TipoRendimento: Categoria do rendimento (ex: "Salário", "Aluguel", "Juros", "Dividendos").
+
+Valor: O valor do rendimento ou movimentação.
+
+Data: Data da movimentação ou do período de referência.
+
+Fonte: Origem do informe/rendimento (ex: nome do banco, nome da empresa).
+
+CodBanco: Código do banco, que se ligaria à planilha TBL_BANCOS.csv.
+
+Observações: Esta tabela seria fundamental para o cálculo de impostos sobre diferentes tipos de receita.
+
+2.3. NOTAS.csv
+Finalidade Provável: Com base no nome, esta planilha deve conter dados de notas de corretagem ou notas fiscais de transações, especialmente relevantes para operações em bolsa de valores ou outras aquisições/vendas de ativos.
+
+Estrutura e Dados (Exemplo Inferido):
+
+ID_Nota: Identificador único da nota.
+
+CPF_Titular: Chave estrangeira para o TITULAR.csv.
+
+DataOperacao: Data da operação.
+
+TipoOperacao: Tipo de operação (ex: "Compra", "Venda").
+
+Ativo: Identificação do ativo negociado (ex: "ITSA4", "PETR4").
+
+Quantidade: Quantidade de ativos negociados.
+
+PrecoUnitario: Preço por unidade do ativo.
+
+ValorTotal: Valor total da operação.
+
+Taxas: Taxas e emolumentos da operação.
+
+CodCorretora: Código da corretora, que pode se ligar à TBL_BANCOS.csv ou a uma tabela similar de corretoras.
+
+Observações: Este arquivo possui 8 linhas acima do cabeçalho, o que indica a necessidade de pré-processamento para remover metadados ou informações irrelevantes antes que os dados possam ser consumidos para análise.
+
+2.4. TBL_BANCOS.csv
+Finalidade Provável: Esta é uma tabela de referência, ou "lookup table", que contém informações básicas sobre instituições financeiras (bancos), usadas para padronizar e enriquecer os dados em outras tabelas.
+
+Estrutura e Dados (Exemplo Inferido):
+
+CodBanco: Código único do banco (ex: "001" para Banco do Brasil, "237" para Bradesco).
+
+NomeBanco: Nome completo da instituição financeira.
+
+CNPJ: CNPJ do banco.
+
+Observações: Essencial para a normalização dos dados e para evitar inconsistências nos nomes dos bancos.
+
+3. Relações Inferidas entre as Planilhas
+
+As planilhas parecem formar um pequeno esquema de dados que pode ser interligado da seguinte forma:
+
+TITULAR.csv (Tabela Mestre):
+
+CPF seria a chave primária.
+
+INFORMES.csv (Tabela Detalhe):
+
+CPF_Titular (chave estrangeira) referenciaria CPF em TITULAR.csv.
+
+CodBanco (chave estrangeira) referenciaria CodBanco em TBL_BANCOS.csv.
+
+NOTAS.csv (Tabela Detalhe):
+
+CPF_Titular (chave estrangeira) referenciaria CPF em TITULAR.csv.
+
+CodCorretora (chave estrangeira) provavelmente referenciaria CodBanco em TBL_BANCOS.csv ou uma tabela similar de corretoras, se houver uma distinção.
+
+TBL_BANCOS.csv (Tabela de Referência):
+
+CodBanco seria a chave primária.
+
+4. Considerações Finais e Potencial de Uso
+
+Este conjunto de planilhas parece ser projetado para auxiliar na organização de informações financeiras pessoais, com um foco claro na preparação para a declaração de imposto de renda. A estrutura permite consolidar dados de diferentes fontes (rendimentos, transações) e associá-los a um titular específico, utilizando uma tabela de referência para bancos.
+
+Para um uso efetivo, seria necessário:
+
+Pré-processamento da NOTAS.csv: Remover as 8 linhas iniciais para acessar os cabeçalhos e dados corretos.
+
+Validação de Dados: Verificar a consistência dos formatos de data, valores numéricos e chaves (CPFs, Códigos de Banco).
+
+Tratamento de Chaves Estrangeiras: Garantir que todos os CPF_Titular e CodBanco/CodCorretora nas tabelas de detalhe tenham correspondência nas tabelas de referência.
+
+A capacidade de integrar e analisar esses dados permitiria ao usuário ter uma visão consolidada de suas finanças e facilitar o processo de preenchimento de declarações fiscais.
